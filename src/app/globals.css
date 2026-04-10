@@ -146,3 +146,72 @@ body {
   margin: 0;
   font-size: 1.05rem;
 }
+
+/* Estilos de la barra de navegacion superior */
+.navbar {
+  display: flex;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar.right {
+  justify-content: flex-end;
+}
+
+.navbar.left {
+  justify-content: flex-start;
+}
+
+/* Estilos de los enlaces que combinan con el texto secundario y el color accent */
+.nav-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--accent);
+}
+
+/* Nuevos estilos para CRUD avanzado */
+.search-form-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 2rem;
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto; /* Empuja los botones a la derecha */
+}
+
+.btn-small {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+}
+
+.btn-edit {
+  background-color: #f59e0b; /* Amber */
+}
+.btn-edit:hover {
+  background-color: #d97706;
+}
+
+.btn-danger {
+  background-color: #ef4444; /* Red */
+}
+.btn-danger:hover {
+  background-color: #dc2626;
+}
+

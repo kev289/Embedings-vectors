@@ -1,6 +1,7 @@
 "use client"; // Habilita el uso de JS en el navegador
 
 import { useEffect } from "react";
+import Link from "next/link";
 
 export default function Home() {
   
@@ -65,6 +66,12 @@ export default function Home() {
 
   return (
     <div className="container">
+      <nav className="navbar right">
+        <Link href="/usuarios" className="nav-link">
+          Módulo de Usuarios →
+        </Link>
+      </nav>
+
       <header className="header">
         <h1>Buscador de Similitud por Vectores</h1>
         <p>Frontend TS consumiendo backend</p>
