@@ -1,64 +1,89 @@
-import Image from "next/image";
+"use client"; // Habilita el uso de JS en el navegador
+
+import { useEffect } from "react";
 
 export default function Home() {
+  
+  useEffect(() => {
+    // Capturamos los elementos del HTML por su ID
+    const form = document.getElementById("search-form") as HTMLFormElement;
+    const input = document.getElementById("search-input") as HTMLInputElement;
+    const btn = document.getElementById("btn-buscar") as HTMLButtonElement;
+    const resultsContainer = document.getElementById("results-list") as HTMLUListElement;
+
+    if (!form || !input || !btn || !resultsContainer) return;
+
+    // Listener para capturar el envío del formulario
+    form.onsubmit = async (event: SubmitEvent) => {
+      event.preventDefault(); // Evita que la página se refresque
+
+      const palabra = input.value;
+      if (palabra.trim() === "") return; // Valida que no esté vacío
+
+      // Feedback visual: bloqueamos botones mientras la IA procesa
+      btn.innerText = "Analizando...";
+      btn.disabled = true;
+      input.disabled = true;
+
+      try {
+        // Petición al backend enviando la palabra clave
+        const respuesta = await fetch("/api/embed", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query: palabra }),
+        });
+
+        const data = await respuesta.json();
+        resultsContainer.innerHTML = ""; // Limpia resultados viejos
+
+        // Si hay resultados, creamos los elementos uno por uno
+        if (data.results && data.results.length > 0) {
+          data.results.forEach((item: any) => {
+            const li = document.createElement("li");
+            li.className = "result-card"; 
+            
+            // Inyectamos la similitud y el texto del vector
+            li.innerHTML = `
+              <span class="similarity-badge">${item.similarity}</span>
+              <p class="result-text">${item.text}</p>
+            `;
+            
+            resultsContainer.appendChild(li); // Lo insertamos en la lista
+          });
+        }
+
+      } catch (error) {
+        console.error("Fallo la conexión con la API", error);
+      } finally {
+        // Restauramos la interfaz al terminar
+        btn.innerText = "Buscar Similitud";
+        btn.disabled = false;
+        input.disabled = false;
+      }
+    };
+  }, []);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="container">
+      <header className="header">
+        <h1>Buscador de Similitud por Vectores</h1>
+        <p>Frontend TS consumiendo backend</p>
+      </header>
+
+      <form id="search-form" className="search-form">
+        <input
+          id="search-input"
+          type="text"
+          placeholder="Escribe una palabra para buscar similitud"
+          className="search-input"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+        <button id="btn-buscar" type="submit" className="btn-buscar">
+          Buscar Similitud
+        </button>
+      </form>
+
+      <main className="results-container">
+        <ul id="results-list" className="results-list"></ul>
       </main>
     </div>
   );

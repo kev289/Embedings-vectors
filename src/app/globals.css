@@ -1,26 +1,148 @@
-@import "tailwindcss";
-
+/* Variables de estilos para la aplicacion */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-color: #0f172a;
+  --panel-bg: rgba(30, 41, 59, 0.7);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Estilos globales de la aplicacion */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Estilos del contenedor principal */
+.container {
+  width: 100%;
+  max-width: 600px;
+  padding: 2rem;
+  background: var(--panel-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 2rem;
+}
+
+/* Estilos del header */
+.header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(to right, #60a5fa, #a78bfa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Estilos del parrafo del header */
+.header p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+}
+
+/* Estilos del formulario de busqueda */
+.search-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 2rem;
+}
+
+/* Estilos del input de busqueda */
+.search-input {
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(15, 23, 42, 0.6);
+  color: white;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+/* Estilos de busqueda con variables para el input */
+.search-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+/* Estilos del boton de busqueda */
+.btn-buscar {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  background-color: var(--accent);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Estilos del boton de busqueda al hacer hover y desactivarse con una variable */
+.btn-buscar:hover:not(:disabled) {
+  background-color: var(--accent-hover);
+  transform: translateY(-2px);
+}
+
+/* Estilos del boton de busqueda desactivado */
+.btn-buscar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Estilos de la lista de resultados */
+.results-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Estilos de la tarjeta de resultados */
+.result-card {
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.2s;
+}
+
+/* Estilos de la tarjeta de resultados al hacer hover con variables para el hover */
+.result-card:hover {
+  transform: scale(1.02);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Estilos de la medalla de similitud */
+.similarity-badge {
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  min-width: 65px;
+  text-align: center;
+}
+
+/* Estilos del texto del resultado */
+.result-text {
+  margin: 0;
+  font-size: 1.05rem;
 }
